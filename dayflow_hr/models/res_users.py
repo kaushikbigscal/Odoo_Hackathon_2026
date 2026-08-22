@@ -102,13 +102,16 @@ class ResUsers(models.Model):
         return True
 
     def _dayflow_admin_group_xmlids(self):
-        # Dayflow's "HR / Admin" role spans employee records, attendance and
-        # leave approvals, so approving it grants the officer/manager group
-        # from each of those stock HR apps, not just hr.group_hr_user.
+        # Dayflow's "HR / Admin" role spans employee records, attendance,
+        # leave approvals and payroll, so approving it grants the
+        # officer/manager group from each of those stock HR apps, not just
+        # hr.group_hr_user. hr.contract gates access behind its own group
+        # entirely separate from hr.group_hr_user, so it's listed explicitly.
         return [
             "hr.group_hr_user",
             "hr_holidays.group_hr_holidays_manager",
             "hr_attendance.group_hr_attendance_manager",
+            "hr_contract.group_hr_contract_manager",
         ]
 
     def action_dayflow_approve_role_request(self):

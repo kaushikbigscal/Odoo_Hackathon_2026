@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_dayflow_payslip" model="ir.actions.report">
+        <field name="name">Payslip</field>
+        <field name="model">dayflow.payslip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dayflow_hr.report_dayflow_payslip</field>
+        <field name="report_file">dayflow_hr.report_dayflow_payslip</field>
+        <field name="binding_model_id" ref="model_dayflow_payslip"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_dayflow_payslip">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Payslip</h2>
+                        <table class="table table-sm" style="width: 100%;">
+                            <tr>
+                                <td><strong>Employee</strong></td>
+                                <td><t t-out="doc.employee_id.name"/></td>
+                                <td><strong>Department</strong></td>
+                                <td><t t-out="doc.department_id.name or '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Period</strong></td>
+                                <td><t t-out="doc.date_from"/> - <t t-out="doc.date_to"/></td>
+                                <td><strong>Status</strong></td>
+                                <td><t t-out="doc.state"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Worked Days</strong></td>
+                                <td><t t-out="doc.worked_days"/> / <t t-out="doc.expected_days"/></td>
+                                <td><strong>Absent Days</strong></td>
+                                <td><t t-out="doc.absent_days"/></td>
+                            </tr>
+                        </table>
+
+                        <table class="table table-bordered mt-3">
+                            <thead>
+                                <tr>
+                                    <th>Component</th>
+                                    <th>Type</th>
+                                    <th class="text-end">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Basic Wage</td>
+                                    <td>Allowance</td>
+                                    <td class="text-end">
+                                        <t t-out="doc.basic_wage"/> <t t-out="doc.currency_id.symbol or ''"/>
+                                    </td>
+                                </tr>
+                                <tr t-foreach="doc.line_ids" t-as="line">
+                                    <td><t t-out="line.name"/></td>
+                                    <td><t t-out="line.rule_type"/></td>
+                                    <td class="text-end">
+                                        <t t-out="line.amount"/> <t t-out="doc.currency_id.symbol or ''"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Gross Pay</strong></td>
+                                    <td class="text-end">
+                                        <strong><t t-out="doc.gross_pay"/> <t t-out="doc.currency_id.symbol or ''"/></strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><strong>Total Deductions</strong></td>
+                                    <td class="text-end">
+                                        <strong><t t-out="doc.total_deductions"/> <t t-out="doc.currency_id.symbol or ''"/></strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><strong>Net Pay</strong></td>
+                                    <td class="text-end">
+                                        <strong><t t-out="doc.net_pay"/> <t t-out="doc.currency_id.symbol or ''"/></strong>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

@@ -2,3 +2,8 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_hr_employee_dayflow_self_read,hr.employee.dayflow.self.read,hr.model_hr_employee,base.group_user,1,0,0,0
 access_dayflow_attendance_day_user,dayflow.attendance.day.user,model_dayflow_attendance_day,base.group_user,1,0,0,0
 access_dayflow_attendance_day_officer,dayflow.attendance.day.officer,model_dayflow_attendance_day,hr.group_hr_user,1,1,1,1
+access_dayflow_salary_rule_officer,dayflow.salary.rule.officer,model_dayflow_salary_rule,hr.group_hr_user,1,1,1,1
+access_dayflow_payslip_officer,dayflow.payslip.officer,model_dayflow_payslip,hr.group_hr_user,1,1,1,1
+access_dayflow_payslip_user,dayflow.payslip.user,model_dayflow_payslip,base.group_user,1,0,0,0
+access_dayflow_payslip_line_officer,dayflow.payslip.line.officer,model_dayflow_payslip_line,hr.group_hr_user,1,1,1,1
+access_dayflow_payslip_line_user,dayflow.payslip.line.user,model_dayflow_payslip_line,base.group_user,1,0,0,0

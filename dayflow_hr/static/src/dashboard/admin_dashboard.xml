@@ -22,6 +22,10 @@
                     <div class="o_dayflow_kpi_value" t-esc="state.kpis.pendingRoles"/>
                     <div class="o_dayflow_kpi_label">Pending Role Requests</div>
                 </div>
+                <div class="o_dayflow_kpi">
+                    <div class="o_dayflow_kpi_value" t-esc="Math.round(state.kpis.payrollCost || 0).toLocaleString()"/>
+                    <div class="o_dayflow_kpi_label">Payroll Cost (This Month)</div>
+                </div>
             </div>
 
             <div class="row g-4">
@@ -107,6 +111,18 @@
                                 <button class="btn btn-sm btn-success" t-on-click="() => this.approveRole(dayflowUser)">Approve</button>
                                 <button class="btn btn-sm btn-outline-danger" t-on-click="() => this.rejectRole(dayflowUser)">Reject</button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports -->
+                <div class="col-12">
+                    <div class="o_dayflow_panel">
+                        <h5 class="mb-2">Reports</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-outline-primary btn-sm" t-on-click="openPayrollAnalysis">Payroll Analysis</button>
+                            <button class="btn btn-outline-primary btn-sm" t-on-click="openAttendanceAnalysis">Attendance Analysis</button>
+                            <button class="btn btn-outline-primary btn-sm" t-on-click="openLeaveAnalysis">Time Off Analysis</button>
                         </div>
                     </div>
                 </div>

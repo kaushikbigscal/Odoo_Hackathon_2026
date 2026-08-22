@@ -18,11 +18,15 @@ Odoo's stock HR apps.
     "data": [
         "security/ir.model.access.csv",
         "security/dayflow_security.xml",
+        "data/dayflow_salary_rule_data.xml",
         "data/mail_template_data.xml",
         "data/ir_cron_data.xml",
         "views/auth_signup_templates.xml",
         "views/dayflow_actions.xml",
         "views/dayflow_attendance_day_views.xml",
+        "views/dayflow_payslip_views.xml",
+        "views/dayflow_analytics_views.xml",
+        "report/dayflow_payslip_report.xml",
         "views/dayflow_menus.xml",
     ],
     "assets": {

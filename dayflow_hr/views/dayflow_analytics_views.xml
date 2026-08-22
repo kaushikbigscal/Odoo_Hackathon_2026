@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Payroll analysis -->
+    <record id="view_dayflow_payslip_pivot" model="ir.ui.view">
+        <field name="name">dayflow.payslip.pivot</field>
+        <field name="model">dayflow.payslip</field>
+        <field name="arch" type="xml">
+            <pivot string="Payroll Analysis">
+                <field name="department_id" type="row"/>
+                <field name="date_from" interval="month" type="col"/>
+                <field name="basic_wage" type="measure"/>
+                <field name="gross_pay" type="measure"/>
+                <field name="total_deductions" type="measure"/>
+                <field name="net_pay" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_dayflow_payslip_graph" model="ir.ui.view">
+        <field name="name">dayflow.payslip.graph</field>
+        <field name="model">dayflow.payslip</field>
+        <field name="arch" type="xml">
+            <graph string="Payroll Analysis" type="bar">
+                <field name="department_id"/>
+                <field name="net_pay" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_dayflow_payslip_analysis" model="ir.actions.act_window">
+        <field name="name">Payroll Analysis</field>
+        <field name="res_model">dayflow.payslip</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="search_view_id" ref="view_dayflow_payslip_search"/>
+        <field name="context">{'search_default_groupby_department': 1}</field>
+    </record>
+
+    <!-- Attendance analysis -->
+    <record id="view_dayflow_attendance_day_pivot" model="ir.ui.view">
+        <field name="name">dayflow.attendance.day.pivot</field>
+        <field name="model">dayflow.attendance.day</field>
+        <field name="arch" type="xml">
+            <pivot string="Attendance Analysis">
+                <field name="department_id" type="row"/>
+                <field name="status" type="col"/>
+                <field name="worked_hours" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_dayflow_attendance_day_graph" model="ir.ui.view">
+        <field name="name">dayflow.attendance.day.graph</field>
+        <field name="model">dayflow.attendance.day</field>
+        <field name="arch" type="xml">
+            <graph string="Attendance Analysis" type="bar" stacked="True">
+                <field name="department_id"/>
+                <field name="status"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_dayflow_attendance_day_analysis" model="ir.actions.act_window">
+        <field name="name">Attendance Analysis</field>
+        <field name="res_model">dayflow.attendance.day</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="search_view_id" ref="view_dayflow_attendance_day_search"/>
+        <field name="context">{'search_default_groupby_department': 1}</field>
+    </record>
+
+</odoo>

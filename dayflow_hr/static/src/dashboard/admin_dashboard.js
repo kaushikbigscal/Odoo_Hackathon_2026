@@ -13,7 +13,7 @@ export class AdminDashboard extends Component {
         this.notification = useService("notification");
         this.state = useState({
             loading: true,
-            kpis: { employees: 0, presentToday: 0, pendingLeaves: 0, pendingRoles: 0 },
+            kpis: { employees: 0, presentToday: 0, pendingLeaves: 0, pendingRoles: 0, payrollCost: 0 },
             employees: [],
             selectedEmployee: null,
             selectedDetail: null,
@@ -34,13 +34,26 @@ export class AdminDashboard extends Component {
     }
 
     async loadKpis() {
-        const [employees, presentToday, pendingLeaves, pendingRoles] = await Promise.all([
+        const now = new Date();
+        const pad = (n) => String(n).padStart(2, "0");
+        const monthStart = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-01`;
+        const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+        const monthEnd = `${nextMonth.getFullYear()}-${pad(nextMonth.getMonth() + 1)}-01`;
+
+        const [employees, presentToday, pendingLeaves, pendingRoles, payrollGroups] = await Promise.all([
             this.orm.searchCount("hr.employee", [["active", "=", true]]),
             this.orm.searchCount("hr.attendance", [["check_out", "=", false]]),
             this.orm.searchCount("hr.leave", [["state", "in", ["confirm", "validate1"]]]),
             this.orm.searchCount("res.users", [["dayflow_role_status", "=", "pending"]]),
+            this.orm.readGroup(
+                "dayflow.payslip",
+                [["state", "in", ["confirmed", "paid"]], ["date_from", ">=", monthStart], ["date_from", "<", monthEnd]],
+                ["net_pay:sum"],
+                []
+            ),
         ]);
-        Object.assign(this.state.kpis, { employees, presentToday, pendingLeaves, pendingRoles });
+        const payrollCost = payrollGroups.length ? payrollGroups[0].net_pay : 0;
+        Object.assign(this.state.kpis, { employees, presentToday, pendingLeaves, pendingRoles, payrollCost });
     }
 
     async loadEmployees() {
@@ -153,5 +166,17 @@ export class AdminDashboard extends Component {
 
     openLeaveApprovals() {
         this.action.doAction("hr_holidays.hr_leave_action_action_approve_department");
+    }
+
+    openPayrollAnalysis() {
+        this.action.doAction("dayflow_hr.action_dayflow_payslip_analysis");
+    }
+
+    openAttendanceAnalysis() {
+        this.action.doAction("dayflow_hr.action_dayflow_attendance_day_analysis");
+    }
+
+    openLeaveAnalysis() {
+        this.action.doAction("hr_holidays.action_hr_available_holidays_report");
     }
 }

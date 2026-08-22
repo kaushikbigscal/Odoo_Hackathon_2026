@@ -35,5 +35,33 @@
             <field name="domain_force">[(1, '=', 1)]</field>
         </record>
 
+        <record id="dayflow_payslip_self_rule" model="ir.rule">
+            <field name="name">Dayflow: employees see only their own payslips</field>
+            <field name="model_id" ref="model_dayflow_payslip"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+        </record>
+
+        <record id="dayflow_payslip_officer_rule" model="ir.rule">
+            <field name="name">Dayflow: HR officers see everyone's payslips</field>
+            <field name="model_id" ref="model_dayflow_payslip"/>
+            <field name="groups" eval="[(4, ref('hr.group_hr_user'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="dayflow_payslip_line_self_rule" model="ir.rule">
+            <field name="name">Dayflow: employees see only their own payslip lines</field>
+            <field name="model_id" ref="model_dayflow_payslip_line"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">[('payslip_id.employee_id.user_id', '=', user.id)]</field>
+        </record>
+
+        <record id="dayflow_payslip_line_officer_rule" model="ir.rule">
+            <field name="name">Dayflow: HR officers see everyone's payslip lines</field>
+            <field name="model_id" ref="model_dayflow_payslip_line"/>
+            <field name="groups" eval="[(4, ref('hr.group_hr_user'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
     </data>
 </odoo>

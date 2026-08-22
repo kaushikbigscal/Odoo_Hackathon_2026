@@ -33,6 +33,12 @@
               action="hr_holidays.hr_leave_action_my"
               sequence="40"/>
 
+    <menuitem id="menu_dayflow_payslip_my"
+              name="My Payslips"
+              parent="menu_dayflow_root"
+              action="action_dayflow_payslip_my"
+              sequence="45"/>
+
     <menuitem id="menu_dayflow_admin"
               name="Administration"
               parent="menu_dayflow_root"
@@ -66,5 +72,52 @@
               action="action_dayflow_attendance_day_all"
               groups="hr.group_hr_user"
               sequence="25"/>
+
+    <menuitem id="menu_dayflow_admin_payroll"
+              name="Payroll"
+              parent="menu_dayflow_admin"
+              groups="hr.group_hr_user"
+              sequence="40"/>
+
+    <menuitem id="menu_dayflow_admin_payslips"
+              name="Payslips"
+              parent="menu_dayflow_admin_payroll"
+              action="action_dayflow_payslip_all"
+              groups="hr.group_hr_user"
+              sequence="10"/>
+
+    <menuitem id="menu_dayflow_admin_salary_rules"
+              name="Salary Rules"
+              parent="menu_dayflow_admin_payroll"
+              action="action_dayflow_salary_rule"
+              groups="hr.group_hr_user"
+              sequence="20"/>
+
+    <menuitem id="menu_dayflow_admin_reports"
+              name="Reports"
+              parent="menu_dayflow_admin"
+              groups="hr.group_hr_user"
+              sequence="45"/>
+
+    <menuitem id="menu_dayflow_admin_reports_payroll"
+              name="Payroll Analysis"
+              parent="menu_dayflow_admin_reports"
+              action="action_dayflow_payslip_analysis"
+              groups="hr.group_hr_user"
+              sequence="10"/>
+
+    <menuitem id="menu_dayflow_admin_reports_attendance"
+              name="Attendance Analysis"
+              parent="menu_dayflow_admin_reports"
+              action="action_dayflow_attendance_day_analysis"
+              groups="hr.group_hr_user"
+              sequence="20"/>
+
+    <menuitem id="menu_dayflow_admin_reports_leave"
+              name="Time Off Analysis"
+              parent="menu_dayflow_admin_reports"
+              action="hr_holidays.action_hr_available_holidays_report"
+              groups="hr.group_hr_user"
+              sequence="30"/>
 
 </odoo>
