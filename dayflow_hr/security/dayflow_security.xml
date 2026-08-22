@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Stock hr.employee grants read/write only to hr.group_hr_user, so
+             plain employees have zero model access. The CSV row above opens
+             read access for every internal user; this rule narrows it back
+             down to "my own record only". Officers/managers get a companion
+             unrestricted rule below so they keep seeing everyone. -->
+        <record id="hr_employee_dayflow_self_read_rule" model="ir.rule">
+            <field name="name">Dayflow: employees read only their own record</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+        </record>
+
+        <record id="hr_employee_dayflow_officer_read_rule" model="ir.rule">
+            <field name="name">Dayflow: HR officers keep unrestricted read</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="groups" eval="[(4, ref('hr.group_hr_user'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="dayflow_attendance_day_self_rule" model="ir.rule">
+            <field name="name">Dayflow: employees see only their own attendance status</field>
+            <field name="model_id" ref="model_dayflow_attendance_day"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+        </record>
+
+        <record id="dayflow_attendance_day_officer_rule" model="ir.rule">
+            <field name="name">Dayflow: HR officers see everyone's attendance status</field>
+            <field name="model_id" ref="model_dayflow_attendance_day"/>
+            <field name="groups" eval="[(4, ref('hr.group_hr_user'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+    </data>
+</odoo>

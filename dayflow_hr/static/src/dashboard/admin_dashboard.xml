@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="dayflow_hr.AdminDashboard">
+        <div class="o_dayflow_admin_dashboard p-4">
+            <h2 class="mb-4">Dayflow Admin</h2>
+
+            <div class="o_dayflow_kpis d-flex flex-wrap gap-3 mb-4">
+                <div class="o_dayflow_kpi">
+                    <div class="o_dayflow_kpi_value" t-esc="state.kpis.employees"/>
+                    <div class="o_dayflow_kpi_label">Employees</div>
+                </div>
+                <div class="o_dayflow_kpi">
+                    <div class="o_dayflow_kpi_value" t-esc="state.kpis.presentToday"/>
+                    <div class="o_dayflow_kpi_label">Checked in now</div>
+                </div>
+                <div class="o_dayflow_kpi">
+                    <div class="o_dayflow_kpi_value" t-esc="state.kpis.pendingLeaves"/>
+                    <div class="o_dayflow_kpi_label">Pending Leaves</div>
+                </div>
+                <div class="o_dayflow_kpi">
+                    <div class="o_dayflow_kpi_value" t-esc="state.kpis.pendingRoles"/>
+                    <div class="o_dayflow_kpi_label">Pending Role Requests</div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Employee directory + switcher -->
+                <div class="col-12 col-lg-6">
+                    <div class="o_dayflow_panel">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="mb-0">Employees</h5>
+                            <button class="btn btn-link btn-sm" t-on-click="openEmployees">View all</button>
+                        </div>
+                        <div class="o_dayflow_employee_list">
+                            <div t-foreach="state.employees" t-as="employee" t-key="employee.id"
+                                 class="o_dayflow_employee_row"
+                                 t-att-class="{ active: state.selectedEmployee and state.selectedEmployee.id === employee.id }"
+                                 t-on-click="() => this.selectEmployee(employee)">
+                                <div class="o_dayflow_employee_name" t-esc="employee.name"/>
+                                <div class="o_dayflow_employee_sub text-muted">
+                                    <t t-esc="employee.job_title or ''"/>
+                                    <t t-if="employee.department_id"> · <t t-esc="employee.department_id[1]"/></t>
+                                </div>
+                            </div>
+                        </div>
+                        <div t-if="state.selectedEmployee" class="o_dayflow_employee_detail mt-3 p-3">
+                            <strong t-esc="state.selectedEmployee.name"/>
+                            <div class="text-muted" t-esc="state.selectedEmployee.work_email or ''"/>
+                            <div t-if="state.selectedDetail" class="mt-2">
+                                <span t-attf-class="badge {{ state.selectedDetail.checkedIn ? 'text-bg-success' : 'text-bg-secondary' }}">
+                                    <t t-esc="state.selectedDetail.checkedIn ? 'Checked in' : 'Not checked in'"/>
+                                </span>
+                                <span class="badge text-bg-warning ms-2">
+                                    <t t-esc="state.selectedDetail.pendingLeaves"/> pending leave(s)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Leave approvals -->
+                <div class="col-12 col-lg-6">
+                    <div class="o_dayflow_panel">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="mb-0">Leave Approvals</h5>
+                            <button class="btn btn-link btn-sm" t-on-click="openLeaveApprovals">View all</button>
+                        </div>
+                        <p t-if="!state.pendingLeaves.length" class="text-muted">No pending leave requests.</p>
+                        <div t-foreach="state.pendingLeaves" t-as="leave" t-key="leave.id"
+                             class="o_dayflow_list_row o_dayflow_list_row_column">
+                            <div class="d-flex justify-content-between align-items-start w-100">
+                                <div>
+                                    <strong t-esc="leave.employee_id and leave.employee_id[1]"/>
+                                    <div class="text-muted small">
+                                        <t t-esc="leave.holiday_status_id and leave.holiday_status_id[1]"/>
+                                        ·
+                                        <t t-esc="leave.date_from and leave.date_from.slice(0, 10)"/>
+                                        →
+                                        <t t-esc="leave.date_to and leave.date_to.slice(0, 10)"/>
+                                    </div>
+                                </div>
+                                <div class="o_dayflow_row_actions">
+                                    <button class="btn btn-sm btn-success" t-on-click="() => this.approveLeave(leave)">Approve</button>
+                                    <button class="btn btn-sm btn-outline-danger" t-on-click="() => this.refuseLeave(leave)">Refuse</button>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control form-control-sm mt-2"
+                                   placeholder="Add a comment (optional)" t-model="leave.comment"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending role requests -->
+                <div class="col-12">
+                    <div class="o_dayflow_panel">
+                        <h5 class="mb-2">Pending HR / Admin Role Requests</h5>
+                        <p t-if="!state.pendingRoles.length" class="text-muted">No pending role requests.</p>
+                        <div t-foreach="state.pendingRoles" t-as="dayflowUser" t-key="dayflowUser.id" class="o_dayflow_list_row">
+                            <div>
+                                <strong t-esc="dayflowUser.name"/>
+                                <div class="text-muted small">
+                                    <t t-esc="dayflowUser.login"/> · Employee ID: <t t-esc="dayflowUser.dayflow_employee_code or '—'"/>
+                                </div>
+                            </div>
+                            <div class="o_dayflow_row_actions">
+                                <button class="btn btn-sm btn-success" t-on-click="() => this.approveRole(dayflowUser)">Approve</button>
+                                <button class="btn btn-sm btn-outline-danger" t-on-click="() => this.rejectRole(dayflowUser)">Reject</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

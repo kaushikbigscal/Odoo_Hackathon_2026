@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="dayflow_hr.DayflowDashboard">
+        <div class="o_dayflow_dashboard">
+            <t t-if="!state.loading">
+                <AdminDashboard t-if="state.isAdmin"/>
+                <EmployeeDashboard t-else=""/>
+            </t>
+        </div>
+    </t>
+
+</templates>

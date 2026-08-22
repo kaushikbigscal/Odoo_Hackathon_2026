@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="dayflow_hr.EmployeeDashboard">
+        <div class="o_dayflow_employee_dashboard p-4">
+            <h2 class="mb-4">My Dayflow</h2>
+
+            <div class="o_dayflow_cards d-flex flex-wrap gap-3 mb-4">
+                <div class="o_dayflow_card" t-on-click="openProfile">
+                    <i class="fa fa-user-circle fa-2x mb-2"/>
+                    <div class="o_dayflow_card_title">Profile</div>
+                </div>
+                <div class="o_dayflow_card" t-on-click="openAttendance">
+                    <i class="fa fa-clock-o fa-2x mb-2"/>
+                    <div class="o_dayflow_card_title">Attendance</div>
+                </div>
+                <div class="o_dayflow_card" t-on-click="openLeaves">
+                    <i class="fa fa-calendar fa-2x mb-2"/>
+                    <div class="o_dayflow_card_title">Leave Requests</div>
+                </div>
+                <div class="o_dayflow_card" t-on-click="logout">
+                    <i class="fa fa-sign-out fa-2x mb-2"/>
+                    <div class="o_dayflow_card_title">Logout</div>
+                </div>
+            </div>
+
+            <h4>Recent Activity</h4>
+            <p t-if="!state.loading and !state.recentLeaves.length" class="text-muted">
+                No recent leave requests.
+            </p>
+            <table t-if="state.recentLeaves.length" class="table table-sm o_dayflow_table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="state.recentLeaves" t-as="leave" t-key="leave.id">
+                        <td t-esc="leave.holiday_status_id and leave.holiday_status_id[1]"/>
+                        <td t-esc="leave.date_from and leave.date_from.slice(0, 10)"/>
+                        <td t-esc="leave.date_to and leave.date_to.slice(0, 10)"/>
+                        <td>
+                            <span t-attf-class="badge o_dayflow_badge o_dayflow_badge_{{leave.state}}"
+                                  t-esc="leaveStateLabel(leave.state)"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </t>
+
+</templates>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="dayflow_signup_fields" inherit_id="auth_signup.fields">
+        <xpath expr="//div[hasclass('field-confirm_password')]" position="after">
+            <div class="mb-3 field-dayflow_employee_code" t-if="not only_passwords">
+                <label for="dayflow_employee_code">Employee ID</label>
+                <input type="text" name="dayflow_employee_code" id="dayflow_employee_code"
+                       class="form-control form-control-sm" required="required"/>
+            </div>
+            <div class="mb-3 field-dayflow_requested_role" t-if="not only_passwords">
+                <label for="dayflow_requested_role">I am signing up as</label>
+                <select name="dayflow_requested_role" id="dayflow_requested_role"
+                        class="form-select form-select-sm">
+                    <option value="employee">Employee</option>
+                    <option value="hr">HR / Admin (requires approval)</option>
+                </select>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="dayflow_signup_message" inherit_id="auth_signup.signup">
+        <xpath expr="//form[hasclass('oe_signup_form')]" position="before">
+            <div t-if="message" class="oe_login_form clearfix">
+                <p class="alert alert-success" role="status">
+                    <t t-esc="message"/>
+                </p>
+                <a href="/web/login" class="btn btn-link btn-sm float-start" role="button">Back to Login</a>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="email_verification_result" name="Dayflow: Email Verification Result">
+        <t t-call="web.login_layout">
+            <div class="oe_login_form clearfix text-center">
+                <t t-if="success">
+                    <p class="alert alert-success" role="status">
+                        Your email address is verified. You can now sign in.
+                    </p>
+                </t>
+                <t t-else="">
+                    <p class="alert alert-danger" role="alert">
+                        This verification link is invalid or has already been used.
+                    </p>
+                </t>
+                <a href="/web/login" class="btn btn-primary btn-sm" role="button">Go to Login</a>
+            </div>
+        </t>
+    </template>
+
+</odoo>

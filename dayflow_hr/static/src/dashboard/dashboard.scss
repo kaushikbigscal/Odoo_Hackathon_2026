@@ -1,0 +1,113 @@
+.o_dayflow_dashboard {
+    overflow-y: auto;
+    height: 100%;
+
+    .o_dayflow_card {
+        width: 160px;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        text-align: center;
+        cursor: pointer;
+        transition: box-shadow 0.15s ease, transform 0.15s ease;
+
+        &:hover {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .o_dayflow_card_title {
+            font-weight: 500;
+        }
+    }
+
+    .o_dayflow_kpi {
+        min-width: 160px;
+        padding: 16px 20px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+
+        .o_dayflow_kpi_value {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .o_dayflow_kpi_label {
+            color: #6c757d;
+            font-size: 0.85rem;
+        }
+    }
+
+    .o_dayflow_panel {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 16px;
+        height: 100%;
+    }
+
+    .o_dayflow_employee_list {
+        max-height: 320px;
+        overflow-y: auto;
+    }
+
+    .o_dayflow_employee_row {
+        padding: 8px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #f5f5f5;
+        }
+
+        &.active {
+            background-color: #eaf1ff;
+        }
+    }
+
+    .o_dayflow_employee_detail {
+        border-top: 1px solid #eee;
+    }
+
+    .o_dayflow_list_row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #f0f0f0;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &.o_dayflow_list_row_column {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+
+    .o_dayflow_row_actions {
+        display: flex;
+        gap: 6px;
+        flex-shrink: 0;
+    }
+
+    .o_dayflow_badge_confirm, .o_dayflow_badge_validate1 {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    .o_dayflow_badge_validate {
+        background-color: #198754;
+        color: #fff;
+    }
+
+    .o_dayflow_badge_refuse {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .o_dayflow_badge_draft, .o_dayflow_badge_cancel {
+        background-color: #6c757d;
+        color: #fff;
+    }
+}

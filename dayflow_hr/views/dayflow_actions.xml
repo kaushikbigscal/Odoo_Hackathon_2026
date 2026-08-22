@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_dayflow_dashboard" model="ir.actions.client">
+        <field name="name">Dayflow Dashboard</field>
+        <field name="tag">dayflow_dashboard_action</field>
+    </record>
+
+    <record id="action_dayflow_my_profile" model="ir.actions.act_window">
+        <field name="name">My Profile</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">form</field>
+        <field name="domain">[('user_id', '=', uid)]</field>
+        <field name="target">current</field>
+    </record>
+
+</odoo>
