@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <record id="esg_rule_department" model="ir.rule">
-        <field name="name">ESG Department: Manager sees all</field>
-        <field name="model_id" ref="model_esg_department"/>
-        <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="groups" eval="[(4, ref('group_esg_manager'))]"/>
-    </record>
-</odoo>
