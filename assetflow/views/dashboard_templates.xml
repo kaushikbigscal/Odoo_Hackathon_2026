@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="dashboard_content" name="AssetFlow Dashboard Content">
+        <style>
+            .af-sidebar {width:230px; min-height:calc(100vh - 46px); background:#3a0ca3; color:#fff; position:fixed; top:46px; left:0; padding:18px 0; z-index:10;}
+            .af-sidebar h6 {color:#c9b6f5; padding:0 20px; font-size:11px; letter-spacing:.08em; text-transform:uppercase;}
+            .af-sidebar a {display:block; color:#ece4ff; padding:8px 20px; text-decoration:none; font-size:14px;}
+            .af-sidebar a:hover {background:#5618c9; color:#fff;}
+            .af-sidebar .sec {margin-top:14px;}
+            .af-main {margin-left:230px; padding:24px 30px;}
+            .af-tile {border-radius:12px; padding:16px 18px; color:#fff; box-shadow:0 2px 8px rgba(0,0,0,.08);}
+            .af-tile .v {font-size:26px; font-weight:700; line-height:1;}
+            .af-tile .l {font-size:12px; opacity:.92; margin-top:6px;}
+            .af-bar {height:24px; border-radius:5px; color:#fff; font-size:12px; line-height:24px; padding-left:8px; margin-top:4px;}
+            .af-act {border:1px solid #3a0ca3; color:#3a0ca3; border-radius:10px; padding:10px 14px; text-decoration:none; display:inline-block; font-weight:600; font-size:13px;}
+            .af-act:hover {background:#3a0ca3; color:#fff;}
+        </style>
+        <div class="af-sidebar">
+            <h6>Navigation</h6>
+            <a t-att-href="links['asset']"><i class="fa fa-cubes"/> Assets</a>
+            <a t-att-href="links['allocation']"><i class="fa fa-exchange"/> Allocations</a>
+            <a t-att-href="links['transfer']"><i class="fa fa-truck-moving"/> Transfers</a>
+            <a t-att-href="links['booking']"><i class="fa fa-calendar"/> Bookings</a>
+            <a t-att-href="links['maintenance']"><i class="fa fa-wrench"/> Maintenance</a>
+            <a t-att-href="links['audit']"><i class="fa fa-clipboard-check"/> Audit</a>
+            <a t-att-href="links['employee']"><i class="fa fa-users"/> Employees</a>
+        </div>
+        <div class="af-main">
+            <h2 class="mb-1">AssetFlow: Dashboard</h2>
+            <p class="text-muted">Enterprise Asset &amp; Resource Management</p>
+            <h5 class="mt-3 mb-2">Today's Overview</h5>
+            <div class="row g-3 mb-3">
+                <t t-foreach="kpis" t-as="k">
+                    <div class="col-md-4 col-lg-2">
+                        <div class="af-tile" t-att-style="'background:%s;' % k[2]"><div class="v"><t t-esc="k[1]"/></div><div class="l"><t t-esc="k[0]"/></div></div>
+                    </div>
+                </t>
+            </div>
+            <div class="row g-3 mb-4">
+                <div class="col"><div class="card p-3"><div class="h5 mb-0"><t t-esc="dept_count"/></div><div class="small text-muted">Departments</div></div></div>
+                <div class="col"><div class="card p-3"><div class="h5 mb-0"><t t-esc="cat_count"/></div><div class="small text-muted">Categories</div></div></div>
+                <div class="col"><div class="card p-3"><div class="h5 mb-0"><t t-esc="emp_count"/></div><div class="small text-muted">Employees</div></div></div>
+                <div class="col"><div class="card p-3"><div class="h5 mb-0"><t t-esc="upcoming_bookings"/></div><div class="small text-muted">Upcoming Bookings</div></div></div>
+            </div>
+            <h5 class="mb-2">⚡ Quick Actions</h5>
+            <div class="mb-4">
+                <a t-att-href="links['asset']" class="af-act me-2 mb-2">+ Register Asset</a>
+                <a t-att-href="links['employee']" class="af-act me-2 mb-2">+ Add Employee</a>
+                <a t-att-href="links['booking']" class="af-act me-2 mb-2">Book Resource</a>
+                <a t-att-href="links['transfer']" class="af-act me-2 mb-2">Raise Request</a>
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="card p-3 mb-3">
+                        <h6>📦 Asset Status Distribution</h6>
+                        <t t-foreach="dist" t-as="d">
+                            <div class="d-flex justify-content-between small"><span><t t-esc="d['label']"/></span><span><t t-esc="d['count']"/></span></div>
+                            <div class="af-bar" t-att-style="d['style']"><t t-esc="d['count']"/></div>
+                        </t>
+                    </div>
+                    <div class="card p-3">
+                        <h6>🏷 Recent Assets</h6>
+                        <table class="table table-sm mb-0">
+                            <thead><tr><th>Tag</th><th>Name</th><th>Category</th><th>Status</th></tr></thead>
+                            <tbody>
+                                <t t-foreach="recent_assets" t-as="a">
+                                    <tr><td><t t-esc="a.asset_tag"/></td><td><t t-esc="a.name"/></td><td><t t-esc="a.category_id.name if a.category_id else ''"/></td><td><t t-esc="a.state"/></td></tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="card p-3 mb-3">
+                        <h6>📅 Recent Bookings</h6>
+                        <ul class="list-unstyled mb-0">
+                            <t t-foreach="recent_bookings" t-as="b">
+                                <li class="border-bottom py-2"><span class="badge text-bg-primary"><t t-esc="b.state"/></span> <t t-esc="b.asset_id.name if b.asset_id else ''"/> — <t t-esc="b.employee_id.name if b.employee_id else ''"/></li>
+                            </t>
+                        </ul>
+                    </div>
+                    <div class="card p-3">
+                        <h6>🔁 Recent Allocations</h6>
+                        <ul class="list-unstyled mb-0">
+                            <t t-foreach="recent_alloc" t-as="al">
+                                <li class="border-bottom py-2"><t t-esc="al.asset_id.name if al.asset_id else ''"/> → <t t-esc="al.employee_id.name if al.employee_id else ''"/></li>
+                            </t>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="dashboard_template" name="AssetFlow Dashboard Page">
+        <t t-call="web.layout">
+            <t t-set="title">AssetFlow Dashboard</t>
+            <t t-call="assetflow.dashboard_content"/>
+        </t>
+    </template>
+</odoo>
