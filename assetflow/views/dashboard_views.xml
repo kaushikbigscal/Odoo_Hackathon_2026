@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_assetflow_dashboard_form" model="ir.ui.view">
+        <field name="name">assetflow.dashboard.form</field>
+        <field name="model">assetflow.dashboard</field>
+        <field name="arch" type="xml">
+            <form><field name="html" widget="html" readonly="1"/></form>
+        </field>
+    </record>
+
+    <record id="action_assetflow_dashboard_view" model="ir.actions.act_window">
+        <field name="name">Dashboard</field>
+        <field name="res_model">assetflow.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_assetflow_dashboard_form"/>
+        <field name="target">main</field>
+        <field name="context">{'create': False, 'delete': False, 'edit': False}</field>
+    </record>
+
+    <record id="view_assetflow_dashboard_kanban" model="ir.ui.view">
+        <field name="name">assetflow.dashboard.kanban</field>
+        <field name="model">assetflow.asset</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_dashboard">
+                <field name="name"/>
+                <field name="asset_tag"/>
+                <field name="state"/>
+                <field name="category_id"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card oe_kanban_global_click p-2">
+                            <strong><field name="asset_tag"/></strong>
+                            <div class="text-muted"><field name="name"/></div>
+                            <span class="badge rounded-pill text-bg-secondary"><field name="category_id"/></span>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_assetflow_dashboard" model="ir.actions.act_window">
+        <field name="name">Dashboard</field>
+        <field name="res_model">assetflow.asset</field>
+        <field name="view_mode">kanban,list</field>
+        <field name="context">{'search_default_group_state': 1}</field>
+    </record>
+
+    <record id="view_assetflow_utilization_pivot" model="ir.ui.view">
+        <field name="name">assetflow.utilization.pivot</field>
+        <field name="model">assetflow.asset</field>
+        <field name="arch" type="xml">
+            <pivot string="Asset Utilization">
+                <field name="state" type="row"/>
+                <field name="category_id" type="column"/>
+                <field name="acquisition_cost" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_assetflow_reports" model="ir.actions.act_window">
+        <field name="name">Asset Reports</field>
+        <field name="res_model">assetflow.asset</field>
+        <field name="view_mode">pivot,list</field>
+    </record>
+</odoo>
